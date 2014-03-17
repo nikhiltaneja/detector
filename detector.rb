@@ -1,23 +1,23 @@
 class Detector
   attr_reader :dictionary
 
-  def initialize(words)
-    @dictionary = words
+  def initialize(dictionary)
+    @dictionary = dictionary
   end
 
-  def detect(primary_word)
-    dictionary.select do |word|
-      unless equivalent?(word, primary_word)
-        compare(word, primary_word)
-      end
-    end     
+  def detect(original_word)
+    sorted_word = sort_word(original_word)
+    find_anagrams(sorted_word, original_word)   
   end
 
-  def equivalent?(first_word, second_word)
-    first_word == second_word
+  def sort_word(word)
+    word.chars.sort.join()
   end
 
-  def compare(first_word, second_word)
-    first_word.chars.sort == second_word.chars.sort 
+  def find_anagrams(sorted_word, original_word)
+    anagrams = dictionary[sorted_word]
+    anagrams.reject do |anagram|
+      anagram == original_word
+    end
   end
 end
